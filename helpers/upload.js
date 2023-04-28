@@ -13,9 +13,11 @@ const removeTmp = (path) => {
   });
 };
 
-exports.uploadImg = async (imgPath) => {
+exports.uploadImg = async (imgPath, folderPath) => {
+  if (!folderPath) return console.log("folderPath not found");
+
   try {
-    const result = await cloudinary.uploader.upload(imgPath, { folder: "StarNewTech/service" });
+    const result = await cloudinary.uploader.upload(imgPath, { folder: `Uzbekenergotamir/${folderPath}` });
     removeTmp(imgPath);
     return result;
   } catch (error) {

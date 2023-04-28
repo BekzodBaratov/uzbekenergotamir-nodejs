@@ -4,7 +4,7 @@ const Joi = require("joi");
 const schema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  image: { type: String, required: true },
+  image: { type: Object, required: true },
 });
 
 const Product = model("products", schema);
