@@ -6,6 +6,7 @@ const fileUpload = require("express-fileupload");
 const productRoute = require("../routers/products.route");
 const partnerRoute = require("../routers/partners.route");
 const calculateRoute = require("../routers/calculates.route");
+const contactRoute = require("../routers/contacts.route");
 
 module.exports = (app) => {
   app.use(morgan("tiny"));
@@ -16,4 +17,5 @@ module.exports = (app) => {
   app.use("/api/v1/products", productRoute);
   app.use("/api/v1/partners", partnerRoute);
   app.use("/api/v1/calculates", calculateRoute);
+  app.use("/api/v1/contacts", contactRoute);
 };

@@ -1,6 +1,6 @@
 const { model, Schema } = require("mongoose");
 
-const schema = new Schema({ image: { type: String, required: true } });
+const schema = new Schema({ image: { type: Object, required: true } });
 
 const Partner = model("partners", schema);
 
