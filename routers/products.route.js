@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const lang = require("../middleware/language");
 const {
   getAllProducts,
   getOneProducts,
@@ -7,7 +8,7 @@ const {
   delProducts,
 } = require("../controllers/products.controller");
 
-router.route("/").get(getAllProducts).post(addProducts);
-router.route("/:id").get(getOneProducts).patch(updProducts).delete(delProducts);
+router.route("/").get(lang, getAllProducts).post(addProducts);
+router.route("/:id").get(lang, getOneProducts).patch(updProducts).delete(delProducts);
 
 module.exports = router;

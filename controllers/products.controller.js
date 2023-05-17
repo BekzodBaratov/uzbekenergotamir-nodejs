@@ -2,25 +2,54 @@ const { Product, validation, validationUpd } = require("../models/products.model
 const { uploadImg, deleteImg, removeTmp } = require("../helpers/upload");
 
 const getAllProducts = async (req, res) => {
-  const products = await Product.find();
-  res.status(200).json({ success: true, products });
+  const products = await Product.find().select(`title_${req.lang} description_${req.lang} image`);
+  const productsRes = [];
+
+  products.forEach((product) => {
+    const data = {
+      _id: product._id,
+      title: product.title_uz || product.title_ru || product.title_en,
+      description: product.description_uz || product.description_ru || product.description_en,
+      image: product.image,
+    };
+    productsRes.push(data);
+  });
+
+  res.status(200).json({ success: true, products: productsRes });
 };
+
 const getOneProducts = async (req, res) => {
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id).select(`title_${req.lang} description_${req.lang} image`);
   if (!product) return res.status(400).json({ success: false, message: "product not found" });
-  res.status(200).json({ success: true, product });
+  let productRes = [];
+
+  const data = {
+    _id: product._id,
+    title: product.title_uz || product.title_ru || product.title_en,
+    description: product.description_uz || product.description_ru || product.description_en,
+    image: product.image,
+  };
+  productRes.push(data);
+  res.status(200).json({ success: true, product: productRes });
 };
+
 const addProducts = async (req, res) => {
   const { error } = validation(req.body);
   if (error) return res.status(400).json({ success: false, message: error.details[0].message });
+
   if (!req.files || !req.files.image) return res.status(400).json({ message: "No image uploaded" });
+
   const { tempFilePath } = req.files.image;
-  const { title, description } = req.body;
+  const { title_uz, title_ru, title_en, description_uz, description_ru, description_en } = req.body;
 
   const result = await uploadImg(tempFilePath, "products");
   const product = await Product.create({
-    title,
-    description,
+    title_uz,
+    title_ru,
+    title_en,
+    description_uz,
+    description_ru,
+    description_en,
     image: { secure_url: result.secure_url, public_id: result.public_id },
   });
   res.status(200).json({ success: true, product });
