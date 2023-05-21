@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const auth = require("../middleware/auth");
 const {
   getAllCalculates,
   getOneCalculate,
@@ -7,7 +8,7 @@ const {
   delCalculate,
 } = require("../controllers/calculates.controller");
 
-router.route("/").get(getAllCalculates).post(addCalculate);
-router.route("/:id").get(getOneCalculate).patch(updCalculate).delete(delCalculate);
+router.route("/").get(auth, getAllCalculates).post(addCalculate);
+router.route("/:id").get(auth, getOneCalculate).patch(auth, updCalculate).delete(auth, delCalculate);
 
 module.exports = router;

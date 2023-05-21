@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const lang = require("../middleware/language");
+const auth = require("../middleware/auth");
 const {
   getAllEnergyProducts,
   getOneEnergyProducts,
@@ -8,7 +9,7 @@ const {
   delEnergyProducts,
 } = require("../controllers/energyProducts.controller");
 
-router.route("/").get(lang, getAllEnergyProducts).post(addEnergyProducts);
-router.route("/:id").get(lang, getOneEnergyProducts).patch(updEnergyProducts).delete(delEnergyProducts);
+router.route("/").get(lang, getAllEnergyProducts).post(auth, addEnergyProducts);
+router.route("/:id").get(lang, getOneEnergyProducts).patch(auth, updEnergyProducts).delete(auth, delEnergyProducts);
 
 module.exports = router;

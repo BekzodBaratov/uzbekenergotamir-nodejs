@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const auth = require("../middleware/auth");
 const {
   getAllContacts,
   getOneContact,
@@ -7,7 +8,7 @@ const {
   delContact,
 } = require("../controllers/contacts.controller");
 
-router.route("/").get(getAllContacts).post(addContact);
-router.route("/:id").get(getOneContact).patch(updContact).delete(delContact);
+router.route("/").get(auth, getAllContacts).post(addContact);
+router.route("/:id").get(auth, getOneContact).patch(auth, updContact).delete(auth, delContact);
 
 module.exports = router;

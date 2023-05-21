@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const auth = require("../middleware/auth");
 const {
   getAllPartners,
   getOnePartner,
@@ -7,7 +8,7 @@ const {
   delPartner,
 } = require("../controllers/partners.controller");
 
-router.route("/").get(getAllPartners).post(addPartner);
-router.route("/:id").get(getOnePartner).patch(updPartner).delete(delPartner);
+router.route("/").get(getAllPartners).post(auth, addPartner);
+router.route("/:id").get(getOnePartner).patch(auth, updPartner).delete(auth, delPartner);
 
 module.exports = router;
