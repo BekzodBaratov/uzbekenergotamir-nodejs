@@ -24,7 +24,9 @@ const updCalculate = async (req, res) => {
   res.status(201).json({ success: true, calculate });
 };
 const delCalculate = async (req, res) => {
-  await Calculate.findByIdAndRemove(req.params.id);
+  const calculate = await Calculate.findByIdAndRemove(req.params.id);
+  if (!calculate) return res.status(404).json({ success: false, message: "Calculate not found!" });
+
   res.status(201).json({ success: true, message: "calculate success deleted" });
 };
 
