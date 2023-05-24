@@ -1,8 +1,8 @@
 const { News, validation, validationUpd } = require("../models/news.model");
-const { uploadImg, deleteImg, removeTmp } = require("../helpers/upload");
+const { uploadImg, deleteImg } = require("../helpers/upload");
 
 const getAllNews = async (req, res) => {
-  const news = await News.find().select(`title_${req.lang} description_${req.lang} image category`);
+  const news = await News.find().select(`title_${req.lang} description_${req.lang} image category path`);
   const newsRes = [];
 
   news.forEach((newsOne) => {
@@ -12,6 +12,7 @@ const getAllNews = async (req, res) => {
       title: newsOne.title_uz || newsOne.title_ru || newsOne.title_en,
       description: newsOne.description_uz || newsOne.description_ru || newsOne.description_en,
       image: newsOne.image,
+      path: newsOne.path,
     };
     newsRes.push(data);
   });
@@ -20,7 +21,9 @@ const getAllNews = async (req, res) => {
 };
 
 const getOneNews = async (req, res) => {
-  const newsOne = await News.findById(req.params.id).select(`title_${req.lang} description_${req.lang} image category`);
+  const newsOne = await News.findById(req.params.id).select(
+    `title_${req.lang} description_${req.lang} image category path`
+  );
   if (!newsOne) return res.status(400).json({ success: false, message: "news not found" });
   let newsOneRes = [];
 
@@ -30,6 +33,7 @@ const getOneNews = async (req, res) => {
     title: newsOne.title_uz || newsOne.title_ru || newsOne.title_en,
     description: newsOne.description_uz || newsOne.description_ru || newsOne.description_en,
     image: newsOne.image,
+    path: newsOne.path,
   };
   newsOneRes.push(data);
   res.status(200).json({ success: true, newsOne: newsOneRes });
@@ -42,7 +46,7 @@ const addNews = async (req, res) => {
   if (!req.files || !req.files.image) return res.status(400).json({ message: "No image uploaded" });
 
   const { tempFilePath } = req.files.image;
-  const { title_uz, title_ru, title_en, description_uz, description_ru, description_en, category } = req.body;
+  const { title_uz, title_ru, title_en, description_uz, description_ru, description_en, category, path } = req.body;
 
   const result = await uploadImg(tempFilePath, "news");
   const newsOne = await News.create({
@@ -53,6 +57,7 @@ const addNews = async (req, res) => {
     description_uz,
     description_ru,
     description_en,
+    path,
     image: { secure_url: result.secure_url, public_id: result.public_id },
   });
   res.status(200).json({ success: true, newsOne });

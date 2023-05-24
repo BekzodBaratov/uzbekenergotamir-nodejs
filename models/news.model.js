@@ -9,6 +9,7 @@ const schema = new Schema({
   description_uz: { type: String, maxLength: 1023, required: true },
   description_ru: { type: String, maxLength: 1023, required: true },
   description_en: { type: String, maxLength: 1023, required: true },
+  path: { type: String, maxLength: 255, required: true },
   image: { type: Object, required: true },
 });
 
@@ -23,6 +24,7 @@ const validation = function (news) {
     description_uz: Joi.string().max(1023).required(),
     description_ru: Joi.string().max(1023).required(),
     description_en: Joi.string().max(1023).required(),
+    path: Joi.string().max(255).required(),
   }).validate(news);
 };
 
@@ -35,6 +37,7 @@ const validationUpd = function (news) {
     description_uz: Joi.string().max(1023),
     description_ru: Joi.string().max(1023),
     description_en: Joi.string().max(1023),
+    path: Joi.string().max(255),
   }).validate(news);
 };
 
