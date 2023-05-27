@@ -2,7 +2,7 @@ const { News, validation, validationUpd } = require("../models/news.model");
 const { uploadImg, deleteImg } = require("../helpers/upload");
 
 const getAllNews = async (req, res) => {
-  const news = await News.find().select(`title_${req.lang} description_${req.lang} image category path -__v`);
+  const news = await News.find().select(`title_${req.lang} description_${req.lang} image category path`);
   const newsRes = [];
 
   news.forEach((newsOne) => {
