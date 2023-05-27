@@ -1,7 +1,7 @@
 const { Contact, validation, validationUpd } = require("../models/contacts.model");
 
 const getAllContacts = async (req, res) => {
-  const contacts = await Contact.find();
+  const contacts = await Contact.find().select("-__v");
   res.status(200).json({ success: true, contacts });
 };
 const getOneContact = async (req, res) => {
@@ -12,8 +12,8 @@ const getOneContact = async (req, res) => {
 const addContact = async (req, res) => {
   const { error } = validation(req.body);
   if (error) return res.status(400).json({ success: false, message: error.details[0].message });
-  const { name, phone, sendPlace, recivePlace, service, loadWeight } = req.body;
-  const contact = Contact.create({ name, phone, sendPlace, recivePlace, service, loadWeight });
+
+  const contact = await Contact.create(req.body);
   res.status(201).json({ success: true, contact });
 };
 const updContact = async (req, res) => {
