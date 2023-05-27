@@ -4,7 +4,7 @@ const { uploadImg, deleteImg } = require("../helpers/upload");
 const getAllEnergyProducts = async (req, res) => {
   const search = req.query.search ? { category: req.query.search } : undefined;
   const energyProducts = await EnergyProduct.find(search).select(
-    `title_${req.lang} description_${req.lang} images category -__v`
+    `title_${req.lang} description_${req.lang} images category`
   );
   const energyProductRes = [];
 
