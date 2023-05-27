@@ -1,4 +1,4 @@
-const cors = require("cors");
+// const cors = require("cors");
 const morgan = require("morgan");
 const errorMiddleware = require("../middleware/error");
 const fileUpload = require("express-fileupload");
@@ -16,7 +16,7 @@ const dashboardRoute = require("../controllers/dashboard.controller");
 module.exports = (app) => {
   app.use(morgan("tiny"));
   app.use(fileUpload({ useTempFiles: true }));
-  app.use(cors());
+  // app.use(cors());
 
   app.use("/api/v1/login", authRoute);
   app.use("/api/v1/users", usersRoute);
