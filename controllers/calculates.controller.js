@@ -1,7 +1,7 @@
 const { Calculate, validation, validationUpd } = require("../models/calculates.model");
 
 const getAllCalculates = async (req, res) => {
-  const calculates = await Calculate.find();
+  const calculates = await Calculate.find().select("-__v");
   res.status(200).json({ success: true, calculates });
 };
 const getOneCalculate = async (req, res) => {

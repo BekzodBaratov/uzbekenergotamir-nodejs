@@ -2,7 +2,7 @@ const { Partner } = require("../models/partners.model");
 const { uploadImg, deleteImg, removeTmp } = require("../helpers/upload");
 
 const getAllPartners = async (req, res) => {
-  const partners = await Partner.find();
+  const partners = await Partner.find().select("-__v");
   res.status(200).json({ success: true, partners });
 };
 const getOnePartner = async (req, res) => {
