@@ -8,5 +8,5 @@ app.use(express.urlencoded({ extended: true }));
 require("./startup/db")();
 require("./startup/routes")(app);
 
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 8000;
 app.listen(port, console.log("Server listening on port " + port));
