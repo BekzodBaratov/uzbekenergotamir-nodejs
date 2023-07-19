@@ -10,6 +10,8 @@ const schema = new Schema({
   description_ru: { type: String, maxLength: 1023, required: true },
   description_en: { type: String, maxLength: 1023, required: true },
   images: { type: [Object], required: true, validate: (v) => Array.isArray(v) && v.length > 1 && v.length < 5 },
+  meta_description: { type: String, maxLength: 1023, required: true },
+  meta_keywords: { type: String, maxLength: 1023, required: true },
 });
 
 const EnergyProduct = model("energyproducts", schema);
@@ -23,6 +25,8 @@ const validation = function (product) {
     description_uz: Joi.string().max(1023).required(),
     description_ru: Joi.string().max(1023).required(),
     description_en: Joi.string().max(1023).required(),
+    meta_description: Joi.string().max(1023).required(),
+    meta_keywords: Joi.string().max(1023).required(),
   }).validate(product);
 };
 
@@ -35,6 +39,8 @@ const validationUpd = function (product) {
     description_uz: Joi.string().max(1023),
     description_ru: Joi.string().max(1023),
     description_en: Joi.string().max(1023),
+    meta_description: Joi.string().max(1023),
+    meta_keywords: Joi.string().max(1023),
   }).validate(product);
 };
 

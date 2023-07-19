@@ -53,9 +53,18 @@ const addEnergyProducts = async (req, res) => {
     });
 
   const images = req.files.images;
-  const { title_uz, title_ru, title_en, description_uz, description_ru, description_en, category } = req.body;
+  const {
+    title_uz,
+    title_ru,
+    title_en,
+    description_uz,
+    description_ru,
+    description_en,
+    category,
+    meta_description,
+    meta_keywords,
+  } = req.body;
 
-  console.log(req.files);
   const imagesUpl = [];
   for (let i = 0; i < images.length; i++) {
     const { tempFilePath } = images[i];
@@ -74,6 +83,8 @@ const addEnergyProducts = async (req, res) => {
     description_ru,
     description_en,
     images: imagesUpl,
+    meta_description,
+    meta_keywords,
   });
   res.status(200).json({ success: true, energyProduct });
 };
