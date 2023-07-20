@@ -15,8 +15,6 @@ const getAllEnergyProducts = async (req, res) => {
       title: energyProduct.title_uz || energyProduct.title_ru || energyProduct.title_en,
       description: energyProduct.description_uz || energyProduct.description_ru || energyProduct.description_en,
       images: energyProduct.images,
-      meta_description: energyProduct.meta_description,
-      meta_keywords: energyProduct.meta_keywords,
     };
     energyProductRes.push(data);
   });
@@ -26,7 +24,7 @@ const getAllEnergyProducts = async (req, res) => {
 
 const getOneEnergyProducts = async (req, res) => {
   const energyProduct = await EnergyProduct.findById(req.params.id).select(
-    `title_${req.lang} description_${req.lang} images category`
+    `title_${req.lang} description_${req.lang} images category meta_description meta_keywords`
   );
   if (!energyProduct) return res.status(400).json({ success: false, message: "energyProducts not found" });
   let energyProductRes = [];
