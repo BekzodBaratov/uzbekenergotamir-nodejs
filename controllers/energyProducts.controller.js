@@ -15,6 +15,8 @@ const getAllEnergyProducts = async (req, res) => {
       title: energyProduct.title_uz || energyProduct.title_ru || energyProduct.title_en,
       description: energyProduct.description_uz || energyProduct.description_ru || energyProduct.description_en,
       images: energyProduct.images,
+      meta_description: energyProduct.meta_description,
+      meta_keywords: energyProduct.meta_keywords,
     };
     energyProductRes.push(data);
   });
