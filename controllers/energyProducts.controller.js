@@ -27,7 +27,6 @@ const getOneEnergyProducts = async (req, res) => {
     `title_${req.lang} description_${req.lang} images category meta_description meta_keywords`
   );
   if (!energyProduct) return res.status(400).json({ success: false, message: "energyProducts not found" });
-  let energyProductRes = [];
 
   const data = {
     _id: energyProduct._id,
@@ -38,8 +37,7 @@ const getOneEnergyProducts = async (req, res) => {
     meta_description: energyProduct.meta_description,
     meta_keywords: energyProduct.meta_keywords,
   };
-  energyProductRes.push(data);
-  res.status(200).json({ success: true, energyProduct: energyProductRes });
+  res.status(200).json({ success: true, energyProduct: data });
 };
 
 const addEnergyProducts = async (req, res) => {
