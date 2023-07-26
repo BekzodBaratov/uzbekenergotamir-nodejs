@@ -13,6 +13,7 @@ const authRoute = require("../controllers/auth.controller");
 const usersRoute = require("../routers/users.route");
 const dashboardRoute = require("../controllers/dashboard.controller");
 const sitemapRoute = require("../controllers/sitemap.controller");
+const sitemapXMLRoute = require("../controllers/sitemap.xml.controller");
 
 module.exports = (app) => {
   app.use(morgan("tiny"));
@@ -29,5 +30,6 @@ module.exports = (app) => {
   app.use("/api/v1/energyProducts", energyProducts);
   app.use("/api/v1/dashboard", dashboardRoute);
   app.use("/api/v1/sitemap.xml", sitemapRoute);
+  app.use("/api/v1/sitemapxml.xml", sitemapXMLRoute);
   app.use(errorMiddleware);
 };
