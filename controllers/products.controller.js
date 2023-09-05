@@ -58,13 +58,13 @@ const updProducts = async (req, res) => {
   const { error } = validationUpd(req.body);
   if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
-  const product = await Product.findById(req.params.id);
+  let product = await Product.findById(req.params.id);
   if (!product) return res.status(404).json({ success: false, message: "Product not found!" });
 
-  if (!req.files || !req.files.image) {
+  if (req.files) {
     await deleteImg(product.image.public_id);
     const { tempFilePath } = req.files.image;
-    const result = await uploadImg(tempFilePath);
+    const result = await uploadImg(tempFilePath, "local_products");
 
     product = await Product.findByIdAndUpdate(
       req.params.id,

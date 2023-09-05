@@ -42,17 +42,6 @@ const addEnergyProducts = async (req, res) => {
     });
 
   const images = req.files.images;
-  const {
-    title_uz,
-    title_ru,
-    title_en,
-    description_uz,
-    description_ru,
-    description_en,
-    category,
-    meta_description,
-    meta_keywords,
-  } = req.body;
 
   const imagesUpl = [];
   for (let i = 0; i < images.length; i++) {
@@ -63,41 +52,38 @@ const addEnergyProducts = async (req, res) => {
     imagesUpl.push({ secure_url, public_id });
   }
 
-  const energyProduct = await EnergyProduct.create({
-    category,
-    title_uz,
-    title_ru,
-    title_en,
-    description_uz,
-    description_ru,
-    description_en,
-    images: imagesUpl,
-    meta_description,
-    meta_keywords,
-  });
+  const energyProduct = await EnergyProduct.create(req.body);
   res.status(200).json({ success: true, energyProduct });
 };
+
 const updEnergyProducts = async (req, res) => {
   const { error } = validationUpd(req.body);
   if (error) return res.status(400).json({ success: false, message: error.details[0].message });
 
-  const energyProduct = await EnergyProduct.findById(req.params.id);
+  let energyProduct = await EnergyProduct.findById(req.params.id);
   if (!energyProduct) return res.status(404).json({ success: false, message: "EnergyProduct not found!" });
 
-  if (!req.files || !req.files.images) {
-    if (req.files.images.length < 2 || req.files.images.length > 5)
+  if (req.files) {
+    if (req.files.images.length < 2 || req.files.images.length > 4) {
       return res.status(400).json({
         success: false,
         message: "Yuklanishi kerak bo'lgan rasmlar soni 2 va undan yuqori 4 va undan kam bo'lishi kerak.",
       });
-
-    for (let i = 0; i < energyProduct.images.length; i++) {
-      await deleteImg(energyProduct.images[i].public_id);
     }
+    for (let i = 0; i < energyProduct.images.length; i++) await deleteImg(energyProduct.images[i].public_id);
+
     const images = req.files.images;
     const imagesUpl = [];
-    for (let i = 0; i < images.length; i++) {
-      const { tempFilePath } = images[i];
+    if (Array.isArray(images)) {
+      for (let i = 0; i < images.length; i++) {
+        const { tempFilePath } = images[i];
+        const result = await uploadImg(tempFilePath, "energyProduct");
+
+        const { secure_url, public_id } = result;
+        imagesUpl.push({ secure_url, public_id });
+      }
+    } else {
+      const { tempFilePath } = images;
       const result = await uploadImg(tempFilePath, "energyProduct");
 
       const { secure_url, public_id } = result;

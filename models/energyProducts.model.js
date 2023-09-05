@@ -9,7 +9,7 @@ const schema = new Schema({
   description_uz: { type: String, maxLength: 1023, required: true },
   description_ru: { type: String, maxLength: 1023, required: true },
   description_en: { type: String, maxLength: 1023, required: true },
-  images: { type: [Object], required: true, validate: (v) => Array.isArray(v) && v.length > 1 && v.length < 5 },
+  images: { type: [Object], required: true, validate: (v) => Array.isArray(v) && v.length < 5 },
   meta_description: { type: String, maxLength: 1023, required: true },
   meta_keywords: { type: String, maxLength: 1023, required: true },
 });
