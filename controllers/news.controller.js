@@ -21,22 +21,10 @@ const getAllNews = async (req, res) => {
 };
 
 const getOneNews = async (req, res) => {
-  const newsOne = await News.findById(req.params.id).select(
-    `title_${req.lang} description_${req.lang} image category path`
-  );
+  const newsOne = await News.findById(req.params.id);
   if (!newsOne) return res.status(400).json({ success: false, message: "news not found" });
-  let newsOneRes = [];
 
-  const data = {
-    _id: newsOne._id,
-    category: newsOne.category,
-    title: newsOne.title_uz || newsOne.title_ru || newsOne.title_en,
-    description: newsOne.description_uz || newsOne.description_ru || newsOne.description_en,
-    image: newsOne.image,
-    path: newsOne.path,
-  };
-  newsOneRes.push(data);
-  res.status(200).json({ success: true, newsOne: newsOneRes });
+  res.status(200).json({ success: true, newsOne });
 };
 
 const addNews = async (req, res) => {

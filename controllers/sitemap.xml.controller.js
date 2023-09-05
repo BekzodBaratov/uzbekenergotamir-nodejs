@@ -1,11 +1,12 @@
 const router = require("express").Router();
 const { SitemapStream, streamToPromise } = require("sitemap");
 const { createGzip } = require("zlib");
-const { Readable } = require("stream");
-
+const { EnergyProduct } = require("../models/energyProducts.model");
 let sitemap;
 
-router.get("/", function (req, res) {
+router.get("/", async function (req, res) {
+  const energy_products = await EnergyProduct.find();
+
   res.header("Content-Type", "application/xml");
   res.header("Content-Encoding", "gzip");
   if (sitemap) return res.send(sitemap);
@@ -14,10 +15,9 @@ router.get("/", function (req, res) {
     const smStream = new SitemapStream({ hostname: "https://uetsolar.uz/" });
     const pipeline = smStream.pipe(createGzip());
 
-    smStream.write({ url: "/page-1/", changefreq: "daily", priority: 0.3 });
-    smStream.write({ url: "/page-2/", changefreq: "monthly", priority: 0.7 });
-    smStream.write({ url: "/page-3/" }); // changefreq: 'weekly',  priority: 0.5
-    smStream.write({ url: "/page-4/", img: "http://urlTest.com" });
+    for (el in energy_products) {
+      smStream.write({ url: `/product/${energy_products[el]._id}`, changefreq: "daily" });
+    }
 
     streamToPromise(pipeline).then((sm) => (sitemap = sm));
     smStream.end();
