@@ -19,18 +19,10 @@ const getAllProducts = async (req, res) => {
 };
 
 const getOneProducts = async (req, res) => {
-  const product = await Product.findById(req.params.id).select(`title_${req.lang} description_${req.lang} image`);
+  const product = await Product.findById(req.params.id);
   if (!product) return res.status(400).json({ success: false, message: "product not found" });
-  let productRes = [];
 
-  const data = {
-    _id: product._id,
-    title: product.title_uz || product.title_ru || product.title_en,
-    description: product.description_uz || product.description_ru || product.description_en,
-    image: product.image,
-  };
-  productRes.push(data);
-  res.status(200).json({ success: true, product: productRes });
+  res.status(200).json({ success: true, product });
 };
 
 const addProducts = async (req, res) => {
