@@ -51,6 +51,7 @@ const addEnergyProducts = async (req, res) => {
     const { secure_url, public_id } = result;
     imagesUpl.push({ secure_url, public_id });
   }
+  req.body.images = imagesUpl;
 
   const energyProduct = await EnergyProduct.create(req.body);
   res.status(200).json({ success: true, energyProduct });
